@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- Some quick and dirty HTML. There are probably some improvements I can make in the future. -->
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Manager - MI-FTC</title>
+    <link href="https://mi-ftc.github.io/global.css" rel="stylesheet" type="text/css" media="all">
+    <script src="internal/lib/theming.js"></script>
+  </head>
+  <body onload="initThemeMan();">
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Theme Manager</h3>
+    <p>These settings are stored in this browser! They will not apply to other browsers or systems.</p>
+    <p>Themes are (currently) the only aspect of this site which <strong class="specific">require JavaScript</strong>, and they are not quite complete:<ul>
+      <li>Link styling is not complete</li>
+      <li>Not all pages may load your set theme yet</li>
+    </ul></p>
+    <p>Click the Set button for the theme you want, then click Apply.</p>
+    <p>The theme only affects the <em>text</em> color and not any decorations (strikethrough, underline, etc.)!</p>
+    <a href="index.html">Home</a>
+    <a href="internal/codecolordemo.html">Test your theme</a>
+	</div>
+  <hr>
+	<div id="contentbox">
+    <table>
+      <tr><td><button onClick="setTheme('light');">Set Light Theme</button></td><td><button onClick="setTheme('default');">Set Default Theme</button></td><td><button onClick="setTheme('dark');">Set Dark Theme</button></td><td><button onClick="setTheme('custom');">Set Custom Theme</button></td><td><button onClick="setTheme('noTheme');">Set No Theme (refresh to apply)</button></td></tr>
+      <tr><td colspan="2"><button onClick="applySetTheme()">Apply Set Theme</button></td><td colspan="2"><p id="setThemeDisplay">JavaScript disabled</p></td><td colspan="2"><button onClick="restoreBuiltinThemes();">Restore Built-in Themes</button></td></tr>
+      <tr><td colspan="2"><p>Set a Custom Theme (use CSS colors):</p></td></tr>
+      <tr><td colspan="2"><p>Background Color: </p></td><td colspan="2"><input id="backgroundInput"></td></tr>
+      <tr><td colspan="2"><p>Border Color: </p></td><td colspan="2"><input id="borderInput"></td></tr>
+      <tr><td colspan="2"><p>Navigation Table Color: </p></td><td colspan="2"><input id="navtableInput"></td></tr>
+      <tr><td colspan="2"><p>Link Color: </p></td><td colspan="2"><input id="linkInput"></td></tr>
+      <tr><td colspan="2"><p>Text Color: </p></td><td colspan="2"><input id="textInput"></td></tr>
+      <tr><td colspan="2"><p>Specific Terms Color: </p></td><td colspan="2"><input id="specificInput"></td></td>
+      <tr><td>---</td></tr>
+      <tr><td colspan="2"><p>Code Colorization:</p></td></tr>
+      <tr><td colspan="2"><p>Keyword: </p></td><td colspan="2"><input id="keywordInput"></td></tr>
+      <tr><td colspan="2"><p>Field: </p></td><td colspan="2"><input id="fieldInput"></td></tr>
+      <tr><td colspan="2"><p>Annotation: </p></td colspan="2"><td><input id="annotationInput"></td></tr>
+      <tr><td colspan="2"><p>String: </p></td><td colspan="2"><input id="stringInput"></td></tr>
+      <tr><td colspan="2"><p>Comment: </p></td><td colspan="2"><input id="commentInput"></td></tr>
+      <tr><td colspan="2"><p>Number: </p></td><td colspan="2"><input id="numberInput"></td></tr>
+      <tr><td colspan="2"><p>Method: </p></td><td colspan="2"><input id="methodInput"></td></tr>
+      <tr><td colspan="2"><p>Type Parameter: </p></td><td colspan="2"><input id="typeParameterInput"></td></tr>
+      <tr><td colspan="2"><p>(valid) Escape Sequence: </p></td><td colspan="2"><input id="escapeSequenceInput"></td></tr>
+      <tr><td colspan="2"><p>Invalid: </p></td><td colspan="2"><input id="invalidInput"></td></tr>
+      <tr><td colspan="2"><p>Invalid (underline): </p></td><td colspan="2"><input id="invalidUnderlineInput"></td></tr>
+      <tr><td colspan="2"><p>Unused: </p></td><td colspan="2"><input id="unusedInput"></td></tr>
+      <tr><td colspan="2"><p>Deprecated: </p></td><td colspan="2"><input id="deprecatedInput"></td></tr>
+      <tr><td colspan="2"><p>Deprecated and marked for removal: </p></td><td colspan="2"><input id="deprecatedRemoveInput"></td><td><button onClick="saveSetTheme(); applySetTheme();">Save and Apply</button></td></tr>
+    </table>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>

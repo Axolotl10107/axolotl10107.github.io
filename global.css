@@ -1,0 +1,245 @@
+.copyright {
+  font-size: 8pt;
+}
+
+/* Last modified time of pages that list it */
+.modtime {
+  font-size: 8pt;
+}
+
+/* The invisible headers on changes.html pages (deprecated) */
+.changehead {
+	display: none;
+}
+
+/* Font size options that conform with rest of site */
+.xsmall {
+	font-size: 8pt;
+}
+
+.small {
+	font-size: 10pt;
+}
+
+
+body {
+  background-color: lightgray;
+}
+
+/* Makes <code> behave like <pre> but with an extra border */
+code {
+  border: 1px solid black;
+  padding: 5px;
+  display: block;
+  white-space: pre-wrap;
+}
+
+ul {
+  margin: 4px;
+}
+
+p {
+  margin: 4px;
+}
+
+i {
+  margin: 4px;
+}
+
+li {
+  margin: 6px;
+}
+
+/*button {
+  background-color: lightgray;
+}
+
+button:hover {
+  background-color: gray;
+}*/
+
+
+/* Allow display of inline code */
+.inline {
+	display: inline;
+  padding: 2px;
+}
+
+/* Code colorization - and now I've ripped the RGB values right from Studio's light theme! */
+/* https://mi-ftc.github.io/internal/codecolordemo.html */
+.keyword {
+	font-weight: bold;
+	color: #0033B3;
+}
+
+.annotation {
+	color: #9E880D;
+}
+
+.comment {
+  font-style: italic;
+	color: #8C8C8C;
+}
+
+.string {
+	font-weight: bold;
+	color: #067D17;
+}
+
+.field {
+  font-weight: bold;
+  color: #871094;
+}
+
+.number {
+  color: #1750EB;
+}
+
+.method {
+  color: #00627A;
+}
+
+.typeParameter {
+  color: #007E8A;
+}
+
+.escapeSequence {
+  color: #0037A6;
+}
+
+/* bad stuff */
+.invalid {
+  color: red;
+}
+
+.invalidUnderline {
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-decoration-style: wavy;
+}
+
+.unused {
+  color: #909090;
+}
+
+.deprecated {
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+.deprecatedRemove {
+  text-decoration: line-through;
+  text-decoration-color: red;
+}
+
+.ideavarlabel {
+  font-size: 8pt;
+  color: lightgray;
+  background-color: lightslategray;
+  margin-right: 3px;
+}
+
+
+/* How to display a specific named item or attribute */
+.specific {
+    font-weight: bold;
+    color: green;
+}
+
+.section {
+    border: 1px solid black;
+    margin: 8px;
+}
+
+
+/* Puts more space around certain crammed links */
+.spacelink {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  display: inline-block;
+}
+
+
+/* The displayed hosts of materials on the Springboard */
+.mathost {
+  font-size: 8pt;
+  font-style: italic;
+  float: right;
+}
+
+
+/*
+  Available topic fields:
+  h5 (for category) - class="theader"
+  h5 - class="topic"
+  i (for topic) - class="tdesc"
+  i (for material) - class="mdesc"
+*/
+
+.theader {
+  display: inline;
+  font-size: 12pt;
+}
+
+.topic {
+  display: inline;
+  font-size: 12pt;
+}
+
+/* .tdesc and .mdesc also get used in various places around the site.
+Most uses of these outside the Springboard should really be changed to .small. 
+Some external uses (notably in download pages) make sense. Use discretion. */
+.tdesc {
+  font-size: 10pt;
+}
+
+.mdesc {
+  font-size: 10pt;
+}
+
+
+/*
+  Available navtable fields:
+  div - id="navbox"
+  table - id="navtable"
+  thead - id="navthead"
+  tbody - id="navtbody"
+  th - id="navth"
+  tr - class="navtr"
+  td - class="navtd"
+  a - class="nava"
+*/
+
+#navtable {
+  border: 1px solid blue;
+  border-spacing: 0px;
+}
+
+#navth {
+  background-color: blue;
+  color: white;
+}
+
+.navtd {
+  border: 1px solid blue;
+  padding: 3px;
+}
+
+/*
+  Available legend fields:
+  div [OR] span - id="legendbox"
+  p - id="legendheader"
+  pre - id="legend"
+*/
+
+/* https://stackoverflow.com/questions/6169666/how-to-resize-an-image-to-fit-in-
+the-browser-window */
+.imgbox {
+  display: grid;
+  height: 100%;
+}
+.center-fit {
+  max-width: 100%;
+  max-height: 100vh;
+  margin: auto;
+}
