@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making a New Control Scheme</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/internal/lib/theming.js"></script>
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body onload="applySetTheme();">
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Making a New Control Scheme</h3>
+    <p>This should feel somewhat familiar, as we already had a system for interchangeable
+	control schemes. This is a new version, however. Some things work similarly to the
+	previous version, and some things work differently.</p>
+	</div>
+	<div id="navbox">
+		<table id="navtable">
+			<thead id="navthead">
+				<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+			</thead>
+			<tbody id="navtbody">
+				<tr class="navtr"><td class="navtd"><a class="nava" href="/index.html">Go Home</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>
+	<div id="contentbox">
+		Preview:
+		<pre><code style="background-color: lightgray;">
+package org.firstinspires.ftc.teamcode.fy23;
+
+// some imports here
+
+public class NewControlScheme implements controlScheme {
+
+	TeleOpState state = new TeleOpState;
+	
+	Gamepad driver;
+	Gamepad manipulator;
+	
+	// When not inverted, pressed = true and released = false.
+	Button exampleMomentaryButton = new MomentaryButton( () -> driver.a );
+	
+	// Only active the first time isActive() is called on it after each new press.
+	// A button press, no matter how long, will only appear as active once.
+	Button exampleTriggerButton = new TriggerButton( () -> driver.b );
+	
+	// Handles toggle for you. Each press toggles what isActive() returns.
+	Button exampleToggleButton = new ToggleButton( () -> driver.x );
+	
+	// Pretend that an axis is a button. Appears as active when the absolute value is greater than the threshold (the second argument).
+	Button exampleAxisAsButton = new AxisAsButton( () -> driver.left_trigger, 0.3);
+	
+	// Runs from 0 to 1
+	Axis exampleLinearAxis = new LinearAxis( () -> driver.right_stick_x );
+	
+	// Arguments: physical axis, invert, scalingFactor
+	// Y axes on analog sticks need to be inverted, and a scaling factor greater than 1 means
+	// that the amount the value increases by is smaller in the center and greater towards the edge of the stick.
+	Axis exampleExponentialAxis = new ExponentialAxis( () -> driver.left_stick_y, true, 2);
+	
+	// Pretend that a button is an axis. When not inverted, pressed = 1 and released = 0.
+	Axis exampleButtonAsAxis = new buttonAsAxis( () -> driver.right_trigger );
+	
+	
+	// Now, some more realistic cases:
+	Axis driveAxis = new LinearAxis( () -> (driver.right_trigger - driver.left_trigger) );
+	Axis turnAxis = new ExponentialAxis( () -> driver.left_stick_x, 2);
+	Axis strafeAxis = new LinearAxis( () -> driver.right_stick_x );
+	
+	Button launchPlane = new TriggerButton( () -> driver.right_bumper );
+	
+	Axis pivotAxis = new ExponentialAxis( () -> manipulator.left_stick_y, true, 2);
+	Axis elevatorAxis = new LinearAxis( () -> (manipulator.right_trigger - manipulator.left_trigger) );
+	
+	Button clawToggle = new ToggleButton( () -> manipulator.a );
+	
+	private void setStateDTS() {
+		state.setDts(new DTS(
+			driveAxis.value(),
+			turnAxis.value(),
+			strafeAxis.value()
+		));
+	}
+	
+	@Override
+	public void getState() {
+		
+	}
+	
+}
+		</code></pre>
+	<hr>
+	<p>TeleOp has three important components:
+	<ul>
+		<li>Initialization <ul>
+			<li>Choose which Robot to use. The Robot will initialize all subsystems and use
+			the correct calibration values.</li>
+			<li>Choose which control scheme to use. This is up to driver preference.</li></ul>
+		</li>
+		<li>Map controller actions to subsystem actions <ul>
+			<li>For example, when the "armToBackdrop" button is pressed, set the arm's pivotAngle
+			to 60 degrees. It's simply a link between the request to perform the action and
+			actually performing it.</li></ul>
+			actually performing it.</li></ul>
+		</li>
+		<li>Call robot.update() <ul>
+			<li>This calls the update() method of each subsystem. All subsystems have this
+			method available and assume that it is called each loop.</li></ul>
+		</li>
+	</ul>
+	</p>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>
