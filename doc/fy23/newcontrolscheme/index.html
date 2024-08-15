@@ -9,17 +9,21 @@
     <link href="/global.css" rel="stylesheet" type="text/css" media="all">
 	<script src="/internal/lib/highlight/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
-    <script src="/internal/lib/theming.js"></script>
 	<!-- Link to any local stylesheets here -->
   </head>
-  <body onload="applySetTheme();">
+  <body>
     <hr><hr><hr>
 	<div id="headerbox">
     <h3>Making a New Control Scheme</h3>
     <p>This should feel somewhat familiar, as we already had a system for interchangeable
 	control schemes. This is a new version, however. Some things work similarly to the
 	previous version, and some things work differently.</p>
+	<p>Please refer to the JavaDoc links below for more detailed information.</p>
+	<a href="https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/primitives/package-summary.html">JavaDoc for axes and buttons</a>
+	<p>Select one of the related packages: "axes" or "buttons". You will then see all the available axis or button implementations, respectively.</p>
+	<a href="https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/teleop/package-summary.html">JavaDoc for TeleOpState</a>
 	</div>
+	<br>
 	<div id="navbox">
 		<table id="navtable">
 			<thead id="navthead">
@@ -55,15 +59,16 @@ public class NewControlScheme implements controlScheme {
 	// Handles toggle for you. Each press toggles what isActive() returns.
 	Button exampleToggleButton = new ToggleButton( () -> driver.x );
 	
-	// Pretend that an axis is a button. Appears as active when the absolute value is greater than the threshold (the second argument).
+	// Pretend that an axis is a button.
+	// Appears as active when the absolute value is greater than the threshold (the second argument).
 	Button exampleAxisAsButton = new AxisAsButton( () -> driver.left_trigger, 0.3);
 	
 	// Runs from 0 to 1
 	Axis exampleLinearAxis = new LinearAxis( () -> driver.right_stick_x );
 	
 	// Arguments: physical axis, invert, scalingFactor
-	// Y axes on analog sticks need to be inverted, and a scaling factor greater than 1 means
-	// that the amount the value increases by is smaller in the center and greater towards the edge of the stick.
+	// Y axes on analog sticks need to be inverted
+	// Scaling factor greater than 1: change in value is less in center, greater towards edge of stick
 	Axis exampleExponentialAxis = new ExponentialAxis( () -> driver.left_stick_y, true, 2);
 	
 	// Pretend that a button is an axis. When not inverted, pressed = 1 and released = 0.
@@ -82,6 +87,8 @@ public class NewControlScheme implements controlScheme {
 	
 	Button clawToggle = new ToggleButton( () -> manipulator.a );
 	
+	// You can make private methods, only used internally, to help you.
+	// For example, I like to make ones like this to de-clutter my getState() method.
 	private void setStateDTS() {
 		state.setDts(new DTS(
 			driveAxis.value(),
@@ -90,34 +97,32 @@ public class NewControlScheme implements controlScheme {
 		));
 	}
 	
+	private Claw.State determineClawState() {
+		if (clawToggle.active()) {
+			return Claw.State.CLOSED;
+		} else {
+			return Claw.State.OPEN;
+		}
+	}
+	
+	
+	// This is the one public method that you are required to provide.
+	// TeleOpState method names (what to set / get):
+	// https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/teleop/TeleOpState.html
 	@Override
 	public void getState() {
+		setStateDTS();
 		
+		state.setArmMovement(pivotAxis.value());
+		state.setElevatorMovement(elevatorAxis.value());
+		
+		state.setClawState(determineClawState());
+		
+		state.setLaunchPlane(launchPlane.isActive());
 	}
 	
 }
 		</code></pre>
-	<hr>
-	<p>TeleOp has three important components:
-	<ul>
-		<li>Initialization <ul>
-			<li>Choose which Robot to use. The Robot will initialize all subsystems and use
-			the correct calibration values.</li>
-			<li>Choose which control scheme to use. This is up to driver preference.</li></ul>
-		</li>
-		<li>Map controller actions to subsystem actions <ul>
-			<li>For example, when the "armToBackdrop" button is pressed, set the arm's pivotAngle
-			to 60 degrees. It's simply a link between the request to perform the action and
-			actually performing it.</li></ul>
-			actually performing it.</li></ul>
-		</li>
-		<li>Call robot.update() <ul>
-			<li>This calls the update() method of each subsystem. All subsystems have this
-			method available and assume that it is called each loop.</li></ul>
-		</li>
-	</ul>
-	</p>
-	</div>
     <hr><hr><hr>
   </body>
 </html>

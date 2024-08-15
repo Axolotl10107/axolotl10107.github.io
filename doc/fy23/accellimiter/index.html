@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using AccelLimiter</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body>
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Using AccelLimiter</h3>
+    <p><b>Note that a bug currently exists in the requestDeltaVel / requestVel methods.
+	A test has been created to catch the problem, but a fix has yet to be implemented.</b></p>
+	</div>
+	<div id="navbox">
+		<table id="navtable">
+			<thead id="navthead">
+				<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+			</thead>
+			<tbody id="navtbody">
+				<tr class="navtr"><td class="navtd"><a class="nava" href="/index.html">Go Home</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>
+	<div id="contentbox">
+		<p>AccelLimiter can do three things:
+		<ul>
+			<li>Limit acceleration on one or more devices<ul>
+				<li>When limiting on multiple devices, it takes their maximum power into account and maintains the proportions between them. (Basically, it behaves the way you'd expect.)</li></ul></li>
+			<li>Calculate stopping distance</li>
+			<li>Ramp up and down to a target position</li>
+		</ul></p>
+		<hr>
+		<h4>Creating new AccelLimiter objects</h4>
+		<p>Each thing you want to limit acceleration on should have its own instance of AccelLimiter (because each instance can only use one set of parameters at a time).</p>
+		<br>
+		<p>To create a new AccelLimiter object, you need to determine two things. You can use any unit you want, as long as you use the same unit everywhere.
+		Typical units are m/s² and t/s² (<i>ticks</i> per second per second).
+		<ul>
+			<li>Maximum Acceleration</li>
+			<li>Maximum change in speed each time a request*() method is called<ul>
+				<li>With this, if one iteration of the program loop takes longer than normal, the speed won't suddenly increase excessively.</li></ul></li>
+		</ul></p>
+		<p>Pass these parameters into the constructor:</p>
+		<pre><code style="background-color: lightgray">
+@Override
+public void init() {
+	double maxAccel = 100; // t/s²
+	double maxDeltaVEachLoop = 10; // also t/s²
+	AccelLimiter exampleAL = new AccelLimiter(maxAccel, maxDeltaVEachLoop);
+// to be continued...
+		</code></pre>
+		<hr>
+		<h4>Limiting Acceleration on a Single Device</h4>
+		<p>There are two methods that you can call in every iteration of your loop to do this:</p>
+		<ul>
+			<li><pre><code style="background-color: lightgray">public double requestDeltaVel(double deltaVel, double currentTime)</code></pre> - Takes a change in velocity and limits it based on the given maximum acceleration and how much time has passed since it was called last.</li>
+			<li><pre><code style="background-color: lightgray">public double requestVel(double newVel, double currentVel, double currentTime)</code></pre> - Does the same thing, but takes and returns the entire velocity rather than only taking the change. (This is shorthand. Under the hood, this figures out the change in velocity, limits that, then adds it back to the previous velocity.)</code></pre></li>
+		</ul>
+		<p>Let's limit the acceleration on a single motor using the AccelLimiter we created earlier. We'll use a DcMotor named "exampleMotor" and the requestVel() method.</p>
+		<p>Remember that our max. acceleration is 100 ticks per second. That will also be our maximum drive velocity, so it will take 1 second for the motor to reach full speed.</p>
+		<p>Also, since our maxDeltaVEachLoop is 10 t/s², if a loop takes longer than 100ms, it won't increase its speed more than that limit on this loop.</p>
+		<pre><code style="background-color: lightgray">
+	// We need to pass the time into the request*() methods so AccelLimiter knows how much time passes between calls.
+	ElapsedTime stopwatch = new ElapsedTime();
+} // end init()
+
+@Override
+public void loop() {
+	// "Requested", as in what the driver wants to do
+	// Let's say that our drive velocity runs from -100 to +100 ticks per second.
+	double requestedDriveVelocity = (gamepad1.right_trigger - gamepad1.left_trigger) * 100;
+
+	// The user request can jump from 0 to 100.
+	// AccelLimiter will only change it as fast as maxAccel allows it to.
+	// Here, if a loop takes 50ms, it will only change it by 5 t/s that loop.
+	double limitedDriveVelocity = exampleAL.requestVel(requestedDriveVelocity, exampleMotor.getVelocity(), stopwatch.milliseconds());
+
+	// If this is a real motor, you should see it gradually ramp up and down as you press the triggers.
+	exampleMotor.setVelocity(limitedDriveVelocity);
+}
+		</code></pre>
+		<p>To limit acceleration on multiple motors that act independently (like PixelArm - the pivot and elevator motors do not affect each other),
+		create a separate AccelLimiter object for each. If the motors are connected together, like they are on the drivebase, continue to the next section.</p>
+		<hr>
+		<h4>Limiting Acceleration on Multiple [Interconnected] Devices</h4>
+		<p>This is done with the following method:<pre><code style="background-color: lightgray">requestDeltaVelOnN(List<Double> deltaVelList, double currentTime)</code></pre>
+		(There is no requestVelOnN() method. You must use change in velocity.)</p>
+		<p>NOTE: This method is meant for multiple motors that are interconnected (the speed of one affects the rest).
+		If your motors act independently (like PixelArm - the pivot and elevator motors do not affect each other), see the previous section.</p>
+		<p>This application is not common enough to include an example here. For an example implementation, look at the code of RRMecanumDriveImpl.applyDTS().</p>
+		<hr>
+		<h4>Calculating Stopping Distance</h4>
+		<pre><code style="background-color: lightgray">public double stoppingDistance(double currentVel, int resolution)</code></pre>
+		<p>This method uses the maxAccel parameter already set for its AccelLimiter instance to determine how far the device will continue travelling while it's ramping down from the given velocity.</p>
+		<p>The <span class="specific">resolution</span> argument controls how precise the calculation is.
+		A higher resolution yields a more accurate result but takes longer to calculate. 1000 seems to be a happy medium, getting close enough without taking too long.</p>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>
