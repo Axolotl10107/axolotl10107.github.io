@@ -3,6 +3,10 @@ org.firstinspires.ftc.teamcode.fy23.gamepad2.primitives.axes
 org.firstinspires.ftc.teamcode.fy23.gamepad2.primitives.buttons
 org.firstinspires.ftc.teamcode.fy23.gamepad2.teleop
 org.firstinspires.ftc.teamcode.fy23.processors
+org.firstinspires.ftc.teamcode.fy23.roadrunner.drive
+org.firstinspires.ftc.teamcode.fy23.roadrunner.trajectorysequence
+org.firstinspires.ftc.teamcode.fy23.roadrunner.trajectorysequence.sequencesegment
+org.firstinspires.ftc.teamcode.fy23.roadrunner.util
 org.firstinspires.ftc.teamcode.fy23.robot
 org.firstinspires.ftc.teamcode.fy23.robot.subsystems
 org.firstinspires.ftc.teamcode.fy23.robot.subsystems.blank
