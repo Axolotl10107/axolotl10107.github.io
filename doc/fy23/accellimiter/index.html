@@ -102,6 +102,28 @@ public void loop() {
 		<p>This method uses the maxAccel parameter already set for its AccelLimiter instance to determine how far the device will continue travelling while it's ramping down from the given velocity.</p>
 		<p>The <span class="specific">resolution</span> argument controls how precise the calculation is.
 		A higher resolution yields a more accurate result but takes longer to calculate. 1000 seems to be a happy medium, getting close enough without taking too long.</p>
+		<pre><code style="background-color: lightgray">
+stoppingDistance = exampleAL.stoppingDistance(motor.getVelocity(), 1000);
+		</code></pre>
+		<p>stoppingDistance now (roughly) equals the distance we will continue to travel while we are ramping down,
+		or the distance we need to have available to stop safely.</p>
+		<p>One potential application of this is ramping down towards the end of an actuator's range.
+		The stopping distance will tell you at what point you must start slowing down.</p>
+		<br>
+		<p>Let's consider an example that lets us easily test our example: Our maximum acceleration is 100 t/s², and we're going 100 t/s.
+		The line of our deceleration will cut the square of 100 t/s over 1 second in half, making it
+		a triangle with half the area. In other words, we will travel 50 ticks while we're still ramping down, or half the distance we would have traveled at full speed.
+		That is our stopping distance. If we built the example above correctly, stoppingDistance should roughly equal 50.</p>
+		<hr>
+		<!-- Ignore the stuff below for now - I forgot how my own feature worked and kinda' want to change it now. -->
+		<!--<h4>Ramping Up/Down to a Target Position</h4>
+		<p>If you're doing this on a single motor, you do not want to use AccelLimiter to do this.
+		Use the SDK's <a href="https://javadoc.io/doc/org.firstinspires.ftc/RobotCore/latest/com/qualcomm/robotcore/hardware/DcMotor.html#setTargetPosition(int)">DcMotor.setTargetPosition()</a> method instead.</p>
+		<p>That said, if you have a fun issue like your motor's encoder counting backwards and the SDK won't work for you, this might be a stopgap solution.
+		What this is really made for, however, is more complex applications such as moving the entire drivetrain (4 motors with different encoder positions and rotation directions)
+		until a target position is reached on one of the dead wheels.</p>
+		<p>There is no blocking version of this (yet). It must be done asynchronously.</p>
+		<pre><code style="background-color: lightgray">public void setupRampAlongDistance(double distance, double maxVelocity)</code></pre>-->
 	</div>
     <hr><hr><hr>
   </body>
