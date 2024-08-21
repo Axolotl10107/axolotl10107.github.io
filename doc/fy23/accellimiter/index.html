@@ -15,8 +15,6 @@
     <hr><hr><hr>
 	<div id="headerbox">
     <h3>Using AccelLimiter</h3>
-    <p><b>Note that a bug currently exists in the requestDeltaVel / requestVel methods.
-	A test has been created to catch the problem, but a fix has yet to be implemented.</b></p>
 	</div>
 	<div id="navbox">
 		<table id="navtable">
@@ -115,15 +113,30 @@ stoppingDistance = exampleAL.stoppingDistance(motor.getVelocity(), 1000);
 		a triangle with half the area. In other words, we will travel 50 ticks while we're still ramping down, or half the distance we would have traveled at full speed.
 		That is our stopping distance. If we built the example above correctly, stoppingDistance should roughly equal 50.</p>
 		<hr>
-		<!-- Ignore the stuff below for now - I forgot how my own feature worked and kinda' want to change it now. -->
-		<!--<h4>Ramping Up/Down to a Target Position</h4>
+		<h4>Ramping Up/Down to a Target Position</h4>
 		<p>If you're doing this on a single motor, you do not want to use AccelLimiter to do this.
 		Use the SDK's <a href="https://javadoc.io/doc/org.firstinspires.ftc/RobotCore/latest/com/qualcomm/robotcore/hardware/DcMotor.html#setTargetPosition(int)">DcMotor.setTargetPosition()</a> method instead.</p>
-		<p>That said, if you have a fun issue like your motor's encoder counting backwards and the SDK won't work for you, this might be a stopgap solution.
+		<p>That said, if you have a fun issue like your motor's encoder counting backwards and the SDK won't work for you, this might be a stopgap solution until you can fix the motor.
 		What this is really made for, however, is more complex applications such as moving the entire drivetrain (4 motors with different encoder positions and rotation directions)
 		until a target position is reached on one of the dead wheels.</p>
 		<p>There is no blocking version of this (yet). It must be done asynchronously.</p>
-		<pre><code style="background-color: lightgray">public void setupRampAlongDistance(double distance, double maxVelocity)</code></pre>-->
+		<pre><code style="background-color: lightgray">public void setupRampAlongDistance(double targetPos, double maxVelocity)</code></pre>
+		<p>You can call this at any time to set the target position and the highest speed at which it will travel (perhaps we should call it "cruising speed").
+		This will reset the AccelLimiter object (!) and put it in the correct internal state for later updateRampAlongDistance() calls to work correctly.</p>
+		<pre><code style="background-color: lightgray">public double updateRampAlongDistance(double currentPos)</code></pre>
+		<p>Call this on every loop <i>after</i> setting up the ramp using the previous method.
+		It will return the velocity that you should send to the motor each loop. See the basic example below:</p>
+		<pre><code style="background-color: lightgray">
+// We want to go to encoder position 1000 at 100 t/s.
+// We'd put this in our init().
+exampleAL.setupRampAlongDistance(1000, 100);
+
+// Here, we give it our position and it gives us the velocity.
+// We'd put this in our loop().
+double applyVel = exampleAL.updateRampAlongDistance(motor.getCurrentPosition());
+// Here you could do any additional processing on the velocity if necessary.
+motor.setVelocity(applyVel);
+		</code></pre>
 	</div>
     <hr><hr><hr>
   </body>
