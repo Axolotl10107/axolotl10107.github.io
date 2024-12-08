@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link href="https://axolotl10107.github.io/global.css" rel="stylesheet" 
+		type="text/css" media="all">
+	<script src="index.js"></script>
+    <script src="internal/lib/theming.js"></script>
+  </head>
+  <body onload="applySetTheme(); showRandomImage();">
+    <hr><hr><hr>
+	<div id="headerbox">
+		<span id="image"></span>
+		<span id="attribution"></span>
+	</div>
+	<div id="navbox">
+		<table id="navtable">
+		<thead id="navthead">
+			<tr class="navtr"><th id="navth" colspan="3">Navigation</th></tr>
+		</thead>
+		<tbody id="navtbody">
+			<tr class="navtr">
+        <td class="navtd"><a class="nava" href="download/index.html">Downloadable / Printable Materials</a></td>
+        <td class="navtd"><a class="nava" href="doc/index.html">Documentation</a></td>
+	  </tr>
+      <tr class="navtr">
+				<td class="navtd"><span style="color: gray">Change the Theme</span></td>
+				<td class="navtd" colspan="2"><a class="nava" target="_blank" href="https://github.com/Axolotl10107/axolotl10107.github.io">Hosted from a Git repo with GitHub Pages</a></td>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+  <div id="contentbox">
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>
