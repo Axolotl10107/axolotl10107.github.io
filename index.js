@@ -5,6 +5,7 @@ var numToName = {
 	1 : "digiclock",
 	2 : "lotlblanket",
 	3 : "lotlspace",
+  4 : "rotary",
 };
 
 var attrib = {
@@ -15,6 +16,8 @@ var attrib = {
 	"lotlblanket" : "<a href='https://www.deviantart.com/drawersofdrawing/art/Axolotl-Copertina-1105342801' target='_blank'>Image</a> by <a href='https://www.deviantart.com/drawersofdrawing/gallery' target='_blank'>DrawersOfDrawing</a> (DeviantArt) - Go support this artist!",
 	
 	"lotlspace" : "<a href='https://printerval.com/ca/space-axolotl-kawaii-mousepad-pastel-goth-japan-anime-comic-mousepad-p83378' target='_blank'>Mousepad</a> by <a href='https://printerval.com/ca/shops/jackson-johnny' target='_blank'>Jackson Johnny</a> (Printerval) - Go support this artist!",
+  
+  "rotary" : "<a href='internal/assets/LMR Rotate Display 32x no loop.gif' target='_blank'>Image</a> by 10107 (<a href='internal/assets/LMR Rotate Display 32x loop with sweep.gif' target='_blank'>Looping version</a>) - created with <a href='http://piskelapp.com' target='_blank'>Piskel</a>",
 };
 
 var imgtags = {
@@ -22,6 +25,7 @@ var imgtags = {
 	"digiclock" : "<img src='internal/assets/LMR digital clock 32x no loop.gif' width=540 height=260>",
 	"lotlblanket" : "<img src='internal/assets/axolotl_copertina_by_drawersofdrawing_dia3byp-pre.png' width=400 height=400>",
 	"lotlspace" : "<img src='internal/assets/617a9f3ba361c-1635426107-617a9f3bca051.webp' width=400 height=400>",
+  "rotary" : "<img src='internal/assets/LMR Rotate Display 32x no loop.gif' width=304 height=400>",
 };
 
 function showRandomImage() {
