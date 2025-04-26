@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Autonomous OpMode</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+	<link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body>
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Making a new Autonomous OpMode</h3>
+    <p>This will cover the boilerplate stuff that you need to set up.
+	The rest of your OpMode will pretty much consist of RoadRunner TrajectorySequenceBuilder methods.
+	Learn more about those on <a href="https://learnroadrunner.com/trajectory-sequence.html">learnroadrunner.com</a>.</p>
+	</div>
+	<div id="navbox">
+		<table id="navtable">
+			<thead id="navthead">
+				<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+			</thead>
+			<tbody id="navtbody">
+				<tr class="navtr"><td class="navtd"><a class="nava" href="../index.html">Go Back</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>
+	<!--<div id="legendbox">
+        <p>Legend:</p>-->
+		<!-- If necessary, insert a legend to define markers on the page. -->
+		<!-- If not necessary, do not include this box. -->
+	<!--</div>-->
+	<hr>
+	<div id="contentbox">
+		<p>Preview:</p>
+		<pre><code style="background-color: lightgray;">
+package org.firstinspires.ftc.teamcode.fy23;
+
+// some imports here
+
+@Autonomous()
+public class NewAutonomous extends LinearOpMode {
+	
+	Robot robot;
+	
+	public void runOpMode() {
+	
+		// This one line prepares everything we need for RoadRunner-powered autonomous.
+		// Use a different robot if necessary.
+		robot = new Robot(RobotRoundhouse.getRobotAParameters(hardwareMap));
+	
+		waitForStart();
+	
+		// The TrajectorySequenceBuilder needs to know our initial pose. We'll assume it's 0 since we haven't moved yet.
+		Pose2d startPose = new Pose2d(<span class="ideavarlabel">x:</span>0, <span class="ideavarlabel">y:</span>0, <span class="ideavarlabel">heading:</span>0);
+		
+		TrajectorySequence trajSeq = robot.drive.trajectorySequenceBuilder(startPose)
+			// Put your other TSB methods here.
+			.build()
+			
+		robot.drive.followTrajectory(trajSeq);
+		
+		telemetry.addLine("Finished.");
+		telemetry.update();
+	
+	}
+}
+		</code></pre>
+		
+	<hr>
+	<pre><code style="background-color: lightgray;">
+robot = RobotRoundhouse.getRobotAParameters(hardwareMap);
+	</code></pre>
+	<p>The <span class="specific">Robot</span> class does all of the initialization work for us.
+	It does all the stuff with the HardwareMap, sets up all the subsystems, and sets up RoadRunner.
+	This one line is all the initialization we need for Autonomous.</p>
+	<hr>
+	<pre><code style="background-color: lightgray;">
+Pose2d startPose = new Pose2d(<span class="ideavarlabel">x:</span>0, <span class="ideavarlabel">y:</span>0, <span class="ideavarlabel">heading:</span>0);
+		
+TrajectorySequence trajSeq = robot.drive.trajectorySequenceBuilder(startPose)
+	// Put your other TSB methods here.
+	.build()
+	</code></pre>
+	<p>This line uses the <span class="specific">TrajectorySequenceBuilder</span> to build a <span class="specific">TrajectorySequence</span>
+	that it can follow. We will store that TrajectorySequence into a variable named <span class="specific">trajSeq</span>.</p>
+	<p>The TrajectorySequence is where all of the actual Autonomous navigation and actions are programmed.
+	All of the navigation and the structure of the sequence is handled by RoadRunner's <span class="specific">TrajectorySequenceBuilder</span>.
+	You can learn more about it at <a href="https://learnroadrunner.com/trajectory-sequence.html">learnroadrunner.com</a>,
+	but for now we will continue with a brief example.
+	To make other things happen, such as moving the manipulator, add markers to call other methods.
+	<br>
+	For example, let's make a trajectory where we go forward and then go right, and we want the arm to move to a 60
+	degree angle while we're moving right. Here's our TSB methods:</p>
+	<pre><code style="background-color: lightgray;">
+	.forward(5)
+	.addTemporalMarker(() -> robot.arm.setPivotAngle(AngleUnit.DEGREES, 60));
+	.strafeRight(5)
+	</code></pre>
+	<p>The action specified by the marker will run in the background, so we're doing two things - 
+	strafing right and raising the arm - simultaneously, saving valuable time.
+	To perform more complicated sequences or create state machines, you will want to create
+	additional methods (outside of runOpMode()) and have your markers call them. This will
+	keep your list of TSB methods clean and readable.</p>
+	<hr>
+	<pre><code style="background-color: lightgray;">
+robot.drive.followTrajectory(trajSeq);
+	</code></pre>
+	<p>This tells the drive subsystem to carry out the trajectory we created.</p>
+	<hr>
+	<pre><code style="background-color: lightgray;">
+telemetry.addLine("Finished.");
+telemetry.update();
+	</code></pre>
+	<p>Here we just let the drivers know that the OpMode is done and they can now queue up TeleOp.
+	We never started a loop, so we're done. The OpMode will end here.</p>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>

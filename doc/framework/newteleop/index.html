@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making a New TeleOp</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body>
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Making a New TeleOp</h3>
+    <p>Be advised that this looks a lot different than it used to. But it's also a lot easier.
+	<br>
+	Also of note: Most TeleOp cases will look identical, except that they will use different robots
+	or different control schemes. As such, you can usually take the RobotATestTeleOp (which looks
+	similar to the code below) as a template and modify those two fields as needed, and the rest
+	of the code will still work. Rarely will you need to create a whole new TeleOp.
+	<br>
+	A more common scenario would be <a href="../newcontrolscheme/index.html">creating a new control scheme</a>.</p>
+	</div>
+	<div id="navbox">
+		<table id="navtable">
+			<thead id="navthead">
+				<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+			</thead>
+			<tbody id="navtbody">
+				<tr class="navtr"><td class="navtd"><a class="nava" href="../index.html">Go Back</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>
+	<div id="contentbox">
+		Preview:
+		<pre><code style="background-color: lightgray;">
+package org.firstinspires.ftc.teamcode.fy23;
+
+// some imports here
+
+@TeleOp()
+public class NewTeleOp extends OpMode {
+	
+	Robot robot;
+	
+	// IndyTeleOpScheme is what we're used to. FieldyTeleOpScheme offers field-oriented driving.
+	IndyTeleOpScheme controlScheme;
+	
+	// This will store the state the controller is in.
+	TeleOpState controlState;
+	
+	public void init() {
+		robot = new Robot(RobotRoundhouse.getRobotAParameters(hardwareMap));
+		controlScheme = new IndyTeleOpScheme(<span class="ideavarlabel">driver:</span>gamepad1, <span class="ideavarlabel">manipulator:</span>gamepad2);
+	}
+	
+	public void loop() {
+		// update controller state
+		controlState = controlScheme.getState();
+		
+		// handle movement
+		robot.drive.applyDTS(controlState.getDTS().normalize());
+		
+		// handle pivot arm
+		robot.arm.setPivotPower(controlState.getPivotPower());
+		robot.arm.setElevatorPower(controlState.getElevatorPower());
+		
+		// handle claw
+		robot.claw.setState(controlState.getClawState());
+		
+		// handle plane launcher
+		if controlState.isLaunch() {
+			robot.planeLauncher.launch();
+		}
+		
+		// call robot.update - This is very important!
+		robot.update();
+	}
+	
+}
+		</code></pre>
+	<hr>
+	<p>TeleOp has three important components:
+	<ul>
+		<li>Initialization <ul>
+			<li>Choose which Robot to use. The Robot will initialize all subsystems and use
+			the correct calibration values.</li>
+			<li>Choose which control scheme to use. This is up to driver preference.</li></ul>
+		</li>
+		<li>Map controller actions to subsystem actions <ul>
+			<li>For example, when the "armToBackdrop" button is pressed, set the arm's pivotAngle
+			to 60 degrees. It's simply a link between the request to perform the action and
+			actually performing it.</li></ul>
+			actually performing it.</li></ul>
+		</li>
+		<li>Call robot.update() <ul>
+			<li>This calls the update() method of each subsystem. All subsystems have this
+			method available and assume that it is called each loop.</li></ul>
+		</li>
+	</ul>
+	</p>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>

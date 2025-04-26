@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making a New Control Scheme</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body>
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Making a New Control Scheme</h3>
+    <p>This should feel somewhat familiar, as we already had a system for interchangeable
+	control schemes. This is a new version, however. Some things work similarly to the
+	previous version, and some things work differently.</p>
+	<p>Please refer to the JavaDoc links below for more detailed information.</p>
+	<a href="https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/primitives/package-summary.html">JavaDoc for axes and buttons</a>
+	<p>Select one of the related packages: "axes" or "buttons". You will then see all the available axis or button implementations, respectively.</p>
+	<a href="https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/teleop/package-summary.html">JavaDoc for TeleOpState</a>
+	</div>
+	<br>
+	<div id="navbox">
+		<table id="navtable">
+			<thead id="navthead">
+				<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+			</thead>
+			<tbody id="navtbody">
+				<tr class="navtr"><td class="navtd"><a class="nava" href="../index.html">Go Back</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>
+	<div id="contentbox">
+		Preview:
+		<pre><code style="background-color: lightgray;">
+package org.firstinspires.ftc.teamcode.fy23;
+
+// some imports here
+
+public class NewControlScheme implements controlScheme {
+
+	TeleOpState state = new TeleOpState;
+	
+	Gamepad driver;
+	Gamepad manipulator;
+	
+	// When not inverted, pressed = true and released = false.
+	Button exampleMomentaryButton = new MomentaryButton( () -> driver.a );
+	
+	// Only active the first time isActive() is called on it after each new press.
+	// A button press, no matter how long, will only appear as active once.
+	Button exampleTriggerButton = new TriggerButton( () -> driver.b );
+	
+	// Handles toggle for you. Each press toggles what isActive() returns.
+	Button exampleToggleButton = new ToggleButton( () -> driver.x );
+	
+	// Pretend that an axis is a button.
+	// Appears as active when the absolute value is greater than the threshold (the second argument).
+	Button exampleAxisAsButton = new AxisAsButton( () -> driver.left_trigger, 0.3);
+	
+	// Runs from 0 to 1
+	Axis exampleLinearAxis = new LinearAxis( () -> driver.right_stick_x );
+	
+	// Arguments: physical axis, invert, scalingFactor
+	// Y axes on analog sticks need to be inverted
+	// Scaling factor greater than 1: change in value is less in center, greater towards edge of stick
+	Axis exampleExponentialAxis = new ExponentialAxis( () -> driver.left_stick_y, true, 2);
+	
+	// Pretend that a button is an axis. When not inverted, pressed = 1 and released = 0.
+	Axis exampleButtonAsAxis = new buttonAsAxis( () -> driver.right_trigger );
+	
+	
+	// Now, some more realistic cases:
+	Axis driveAxis = new LinearAxis( () -> (driver.right_trigger - driver.left_trigger) );
+	Axis turnAxis = new ExponentialAxis( () -> driver.left_stick_x, 2);
+	Axis strafeAxis = new LinearAxis( () -> driver.right_stick_x );
+	
+	Button launchPlane = new TriggerButton( () -> driver.right_bumper );
+	
+	Axis pivotAxis = new ExponentialAxis( () -> manipulator.left_stick_y, true, 2);
+	Axis elevatorAxis = new LinearAxis( () -> (manipulator.right_trigger - manipulator.left_trigger) );
+	
+	Button clawToggle = new ToggleButton( () -> manipulator.a );
+	
+	// You can make private methods, only used internally, to help you.
+	// For example, I like to make ones like this to de-clutter my getState() method.
+	private void setStateDTS() {
+		state.setDts(new DTS(
+			driveAxis.value(),
+			turnAxis.value(),
+			strafeAxis.value()
+		));
+	}
+	
+	private Claw.State determineClawState() {
+		if (clawToggle.active()) {
+			return Claw.State.CLOSED;
+		} else {
+			return Claw.State.OPEN;
+		}
+	}
+	
+	
+	// This is the one public method that you are required to provide.
+	// TeleOpState method names (what to set / get):
+	// https://axolotl10107.github.io/javadoc/fy23/org/firstinspires/ftc/teamcode/fy23/gamepad2/teleop/TeleOpState.html
+	@Override
+	public void getState() {
+		setStateDTS();
+		
+		state.setArmMovement(pivotAxis.value());
+		state.setElevatorMovement(elevatorAxis.value());
+		
+		state.setClawState(determineClawState());
+		
+		state.setLaunchPlane(launchPlane.isActive());
+	}
+	
+}
+		</code></pre>
+    <hr><hr><hr>
+  </body>
+</html>
