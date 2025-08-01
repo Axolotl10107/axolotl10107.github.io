@@ -1,6 +1,8 @@
-org.firstinspires.ftc.teamcode.framework.gamepad2.primitives
-org.firstinspires.ftc.teamcode.framework.gamepad2.primitives.axes
-org.firstinspires.ftc.teamcode.framework.gamepad2.primitives.buttons
+org.firstinspires.ftc.teamcode.fakestuff
+org.firstinspires.ftc.teamcode.framework.adapters
+org.firstinspires.ftc.teamcode.framework.ctlpad.primitives
+org.firstinspires.ftc.teamcode.framework.ctlpad.primitives.axes
+org.firstinspires.ftc.teamcode.framework.ctlpad.primitives.buttons
 org.firstinspires.ftc.teamcode.framework.processors
 org.firstinspires.ftc.teamcode.framework.subsystems.blankdevice
 org.firstinspires.ftc.teamcode.framework.subsystems.claw
@@ -12,7 +14,6 @@ org.firstinspires.ftc.teamcode.framework.subsystems.rrmecanumdrive
 org.firstinspires.ftc.teamcode.framework.units
 org.firstinspires.ftc.teamcode.framework.util
 org.firstinspires.ftc.teamcode.framework.util.autoSwitch
-org.firstinspires.ftc.teamcode.fy23.fakestuff
 org.firstinspires.ftc.teamcode.fy23.subsystems.planelauncher
 org.firstinspires.ftc.teamcode.fy24.controls
 org.firstinspires.ftc.teamcode.fy24.robots
