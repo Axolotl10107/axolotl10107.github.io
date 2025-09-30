@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- Head structure from Neocities (https://www.neocities.org) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Scheme Generator</title>
+	<link href="/internal/lib/highlight/intellij-light.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/global.css" rel="stylesheet" type="text/css" media="all">
+	<script src="/internal/lib/highlight/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/internal/lib/theming.js"></script>
+	<!-- Link to any local stylesheets here -->
+  </head>
+  <body onload="applySetTheme();">
+    <hr><hr><hr>
+	<div id="headerbox">
+    <h3>Control Scheme Generator</h3>
+    <p>Two programs to generate a Java control scheme with a graphical editor</p>
+	</div>
+	<div id="navbox">
+		<table id="navtable"><thead id="navthead">
+		<tr class="navtr"><th id="navth" colspan="1">Navigation</th></tr>
+	</thead><tbody id="navtbody">
+		<tr class="navtr"><td class="navtd"><a class="nava" href="/index.html">Go Home</a></td></tr>
+	</tbody></table>
+	</div>
+	<hr>
+	<div id="contentbox">
+		<h4>CTLedit</h4>
+    <img src="CTLedit.jpg">
+    <h4><a href="https://snap.berkeley.edu/project?username=michaelrw&projectname=CTLedit">Run CTLedit</a></h4>
+    <p>(I recommend running it in the editor; it's just a little less finnicky)</p>
+    <p>You have to access it through the link above. You can't search for it on
+    Snap!.</p>
+    <p>A graphical controls editor written in Snap!. Instructions are included
+    with it. Use the "Export" option, right-click on the lists and hit "export",
+    then take those files to the next program:</p>
+    <br>
+    <h4>CTL2Java</h4>
+    <p>I don't need to link to this one because it's right in our code! This is
+    a Python program that takes JSON files from CTLedit and creates a Control
+    scheme.</p>
+    <p>You will need a Python interpreter to run this. I run straight IDEA
+    rather than Android Studio, so I can install the Python plugin and run it
+    right alongside our Java code. But that plugin seems finnicky in Studio.</p>
+    <p>You can look at the command-line options for ctl2java.py, or you can run
+    gui.py to get the simplest little GUI that me and Google's AI Overview could
+    throw together in a few minutes.</p>
+    <br>
+    <p>I'll get a newsletter-worthy write-up ready someday maybe when I actually
+    have time, if that ever happens again before the season ends.</p>
+	</div>
+    <hr><hr><hr>
+  </body>
+</html>
