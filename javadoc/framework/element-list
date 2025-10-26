@@ -1,4 +1,3 @@
-org.firstinspires.ftc.teamcode.fakestuff
 org.firstinspires.ftc.teamcode.framework.adapters
 org.firstinspires.ftc.teamcode.framework.ctlpad.primitives
 org.firstinspires.ftc.teamcode.framework.ctlpad.primitives.axes
@@ -14,11 +13,8 @@ org.firstinspires.ftc.teamcode.framework.subsystems.rrmecanumdrive
 org.firstinspires.ftc.teamcode.framework.units
 org.firstinspires.ftc.teamcode.framework.util
 org.firstinspires.ftc.teamcode.framework.util.autoSwitch
-org.firstinspires.ftc.teamcode.fy23.subsystems.planelauncher
-org.firstinspires.ftc.teamcode.fy24.controls
-org.firstinspires.ftc.teamcode.fy24.robots
-org.firstinspires.ftc.teamcode.fy24.subsystems.doublearm
-org.firstinspires.ftc.teamcode.roadrunner.drive
-org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence
-org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.sequencesegment
-org.firstinspires.ftc.teamcode.roadrunner.util
+org.firstinspires.ftc.teamcode.fy25.ctlpad
+org.firstinspires.ftc.teamcode.fy25.robots
+org.firstinspires.ftc.teamcode.fy25.subsystems.launchergate
+org.firstinspires.ftc.teamcode.fy25.subsystems.launcherwheel
+org.firstinspires.ftc.teamcode.fy25.subsystems.motorlntake
